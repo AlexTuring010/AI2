@@ -1,0 +1,14 @@
+# Data & models (usually too large for git)
+data/
+models/
+*.h5
+*.pt
+*.pkl
+
+# Jupyter artifacts
+.ipynb_checkpoints/
+__pycache__/
+
+# Env
+.env
+venv/
