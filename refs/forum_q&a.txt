@@ -1,0 +1,282 @@
+Inquiry regarding Kaggle accelerator usage for the assignment
+Updated 2 weeks ago by Anonymous Beaker
+Regarding the specific assignment on Kaggle, I would like to ask if we are allowed to use the GPU T4 x2 accelerator (or any other accelerator we deem appropriate). Alternatively, is it mandatory to keep the accelerator setting at "None", meaning using the CPU only?
+
+Thank you in advance for your time and guidance.
+
+Instructors' Answer
+Updated 2 weeks ago by Despina Athanasia Pantazi
+Hello,
+
+You are allowed and encouraged to use GPUs for this assignment.
+
+------------------------------------------------------------------------------------------------
+
+Question - Answer pairs with the same label
+Updated 2 weeks ago by Σπύρου Γεώργιος
+As we have now submitted Homework 1 already, and we don't have to perform any data analysis for Homework 2, I have a question about some the data in the dataset. I have discovered that 24 question-answer pairs exist duplicate in the training set, and have different labels!
+
+For example the same question pair (question1 - answer1) in row X has a label of "Clear Reply" and row Y has a label of "Ambivalent". I understand that keeping both these pairs hurts model performance.
+
+Now that clean data might matter more in Homework 2, what is the proper handling of such duplicates? Is it acceptable to just drop all these 24 rows?
+
+Instructors' Answer
+Updated 2 weeks ago by Despina Athanasia Pantazi
+Hello,
+
+Yes, it is acceptable to drop these 24 rows.
+
+
+------------------------------------------------------------------------------------------------
+
+AttributeError: BertTokenizer has no attribute encode_plus
+Updated 2 weeks ago by Anonymous Beaker and Σπύρου Γεώργιος
+Good afternoon. Using the tutorial notebook in my own implementation, I am getting the following error:
+
+AttributeError: BertTokenizer has no attribute encode_plus
+
+By searching online, I found out that this happens due to a newer version of transformers. Should we downgrade to an older transformers version, or use a different apporach?
+
+Instructors' Answer
+Updated 2 weeks ago by Despina Athanasia Pantazi
+Hello,
+
+Both approaches are acceptable.
+
+
+------------------------------------------------------------------------------------------------
+
+settings for select GPU
+Updated 2 weeks ago by tanassinikvel
+Hi, we must select GPU P100 or T4 X2   ?
+0
+66 views
+Students' Answer
+Updated 2 weeks ago by Konstantinos Salmas
+Hello,
+
+If you do choose the T4 x2, mind you (I did not initially know :D) that it allows you for 2 parallel GPUs (hence the name), and while the quota is running you can actually speed up the process more by using something like:
+
+if torch.cuda.device_count() > 1:
+        model = nn.DataParallel(model)
+model = model.to(DEVICE)
+Which splits the batch into two GPUs. It does not drop the runtime in half (but it is a great boost).
+
+Documentation: https://docs.pytorch.org/docs/stable/generated/torch.nn.DataParallel.html
+
+1
+Instructors' Answer
+Updated 2 weeks ago by Despina Athanasia Pantazi
+Hello,
+
+This is up to you. 
+
+------------------------------------------------------------------------------------------------
+
+what is "seed"?
+Updated 2 weeks ago by tanassinikvel
+Good morning!
+
+"        students must use a random seed to ensure reproducibility        "
+
+what does this mean?
+
+thanks!
+
+Instructors' Answer
+Updated 2 weeks ago by Despina Athanasia Pantazi
+Hello,
+
+A random seed is a number that is used to initialize a pseudo-random number generator. In this way, your results can be reproducible. Please check the subsection 4.3 of the tutorial to see how it can be used.
+
+------------------------------------------------------------------------------------------------
+
+kaggle metrics
+Updated 2 weeks ago by Anonymous Calc
+οταν λετε οτι στο kaggle μετραμε με το f1 εννοειτε το weighted ή το macro?
+
+Instructors' Answer
+Updated 2 weeks ago by Despina Athanasia Pantazi
+Καλησπέρα,
+
+Εννοούμε την F1-score, ή αλλιώς balanced F-score ή F-measure:
+
+https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
+
+------------------------------------------------------------------------------------------------
+
+preprocessing
+Updated 2 weeks ago by Anonymous Atom
+χρειαζεται να κανουμε πειραματα preprocessing ,οπως καναμε στην προηγουμενη ? επειδη βλεπω δε τονιζεται και τοσο στην εκφωνηση.
+
+Instructors' Answer
+Updated 2 weeks ago by Despina Athanasia Pantazi
+Καλησπέρα,
+
+Η πληροφορία που αφορά τη μελέτη των δεδομένων της άσκησης (αριθμό δεδομένων, αριθμό κλάσεων κλπ) και ό,τι άλλο θεωρείτε ότι εφαρμόζεται και στην εργασία 2 μπορεί να χρησιμοποιηθεί από την εργασία 1, αρκεί να το καταγράψετε στο report.
+
+Τώρα, επιλογές όπως το αν θα αφαιρέσετε stop words για παράδειγμα, το οποίο διαφέρει ανάλογα την κάθε υλοποίηση (μεγάλα μοντέλα vs word2vec λόγου χάρη), πρέπει να το διαχειριστείτε με βάση τη θεωρία σας.
+
+0
+3 Followup Discussions
+
+Resolved
+Σπύρου Γεώργιος  2 weeks ago
+Στο φροντιστήριο που ρωτήθηκε η συγκεκριμένη ερώτηση, αναφέρθηκε ότι μπορούμε να χρησιμοποιήσουμε τα ευρήματα για τα δεδομένα από το HW1 ως έχουν, ωρίς να ξαναπειραματιστούμε. Αρκεί να αναφέρεις τι είχες βρει στο HW1 και στο report του HW2 περιληπτικά.
+0
+Anonymous Atom  2 weeks ago
+μα ειχε μεγαλη διαφορα το word2vec απο το tfidf .Τωρα πως ξερω ποια να διαλεξω? Αυτα που ειδα οτι ειχαν καλυτερα αποτελεσματα στο word2vec ή στο tfidf?
+0
+
+Resolved
+Anonymous Calc  1 week ago
+Δεν εχω δει ακομα την θεωρεια αλλα τα bert μοντελα δεν θελουν μεγαλη επεξεργασια των δεοδμενων, ακομα και τα stopwords πιθανων να ειναι χρησιμα για ενα μοντελο transformer. Οποτε μαλλον θα χρειαστουμε αλλη επεξεργασια δεδομενων αν αυτο ισχυει, μια πιο απλη επεξεργασια
+
+------------------------------------------------------------------------------------------------
+
+Tokenization
+Updated 1 week ago by Γεώργιος Γκούμας
+Μπορούμε να χρησιμοποιήσουμε dataset.map για το tokenazation αντί του loop που εχει προταθεί απο το tutorial ;
+
+Instructors' Answer
+Updated 1 week ago by Despina Athanasia Pantazi
+Καλησπέρα,
+
+Μπορείτε αν το προτιμάτε, αρκεί να είναι ξεκάθαρο πώς το χρησιμοποιείτε.
+
+------------------------------------------------------------------------------------------------
+
+All experiments in notebook
+Updated 1 week ago by Anonymous Scale
+In the final notebook should we have a cell for each experiment or is it fine to have just the final run cells given the code is identical everywhere with only the hyper-parameter values changing, making notebook execution needlessly long
+
+Instructors' Answer
+Updated 1 week ago by Despina Athanasia Pantazi
+Hello,
+
+Please keep all your experiments in the notebook, but comment out the ones that are not part of your final solution. 
+
+------------------------------------------------------------------------------------------------
+
+Ερώτηση σχετικά με το submission
+Updated 7 days ago by Anonymous Gear
+Καλησπέρα και χρόνια πολλά.
+
+Ήθελα να ρωτήσω, στην εργασία λεει  "The resulting file must follow the format specified in the provided sample submission.csv file and
+must contain the predictions that your model makes over the test set" ενώ στην ενότητα dataset του διαγωνισμού το αρχείο ονομάζεται sample_solution.csv. Φαντάζομαι η εκφώνηση αναφέρεται σε αυτό, σωστα; 
+
+Ευχαριστώ.
+
+0
+48 views
+Students' Answer
+Updated 6 days ago by tanassinikvel
+Helllo, our Lord is Risen!
+
+also a same problem exists when trying to submit this file named according to the assignment!
+
+the named provided by assignment differs from the name provided by competition!
+
+the first asks for name , example, submission_bert-based-uncased.csv, but the second for submission.csv, and if you put the first, results error: submission file not found!!!!!!
+
+what may we do?  
+
+0
+3 Followup Discussions
+
+Resolved
+tanassinikvel  6 days ago
+Helllo, our Lord is Risen!
+
+also a same problem exists when trying to submit this file named according to the assignment!
+
+the named provided by assignment differs from the name provided by competition!
+
+the first asks for name , example, submission_bert-based-uncased.csv, but the second for submission.csv, and if you put the first, results error: submission file not found!!!!!!
+
+what may we do?  
+
+0
+Anonymous Gear  6 days ago
+Το είχα και εγώ αυτό το θέμα και έβαλα το κελί που φτιάχνει το csv τελευταίο τελευταίο. Το έβαλα να φτιάχνει 2 (πανομοιότυπα) csv, ένα με το όνομα που ζητάει η εργασία και ένα "submission.csv". Αν το κάνεις έτσι σε αφήνει να ανεβάσεις το csv που λέγεται όπως θέλει η εργασία. Αν φτιάξεις μόνο αυτό δεν σε αφήνει να το ανεβάσεις. Περίεργο δεν είναι; Πειράζει να το αφήσουμε έτσι (αφού λειτουργησε έτσι φοβάμαι να το πειράξω)
+0
+Despina Athanasia Pantazi  5 days ago
+Καλησπέρα,
+
+Αφήστε το έτσι, όλα καλά. 
+
+2
+
+
+------------------------------------------------------------------------------------------------
+
+Ερώτηση σχετικά με baseline
+Updated 7 days ago by Anonymous Poet
+Καλησπέρα,
+
+Κοιτώντας το leaderboard του kaggle υποθέτω ότι το baseline ειναι το 0.56(?). Αυτό σημαίνει ότι το καλύτερο μας μοντέλο εκ των τριών (δλδ αυτό με το καλύτερο σκορ) πρέπει να το ξεπερνάει, ιδανικά; Ή ότι αναμένεται και τα 3 να το ξεπερνανε;
+
+Ευχαριστώ.
+
+0
+42 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 5 days ago by Despina Athanasia Pantazi
+Καλησπέρα,
+
+Χρόνια πολλά!
+
+Εφόσον ο διαγωνισμός είναι ένας και για τα τρία μοντέλα, δεν είναι ξεκάθαρο ποιο από τα μοντέλα είναι στα αποτελέσματα του leaderboard δυστυχώς. Δεν αναμένουμε να το ξεπερνάνε όλα τα μοντέλα, μιας και όπως θα δείτε και εσείς, κάποια μοντέλα τα πάνε καλύτερα σε σχέση με τα υπόλοιπα. Ιδανικά, πρέπει να προσπαθήσετε να ξεπεράσετε το score με το καλύτερό σας μοντέλο. 
+
+------------------------------------------------------------------------------------------------
+
+Clarification regarding the "smaller vs larger models" comparison in Experiments
+Updated 5 days ago by Anonymous Calc
+Hello,
+
+I have a question regarding the "Experiments" section of the report. The guidelines state that we should investigate the "differences between smaller and larger models".
+
+Does this strictly require us to fine-tune a "large" variant (such as bert-large or deberta-v3-large), or is it acceptable to base this comparison strictly on the three required base models (for instance, treating distilbert-base as the "smaller" model and deberta-v3-base as the "larger/stronger" one)?
+
+Thank you in advance!
+
+0
+43 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 3 days ago by Despina Athanasia Pantazi
+Hello,
+
+The second comparison that you mention is acceptable. You can experiment with larger variants of the models as well, but it is not mandatory. 
+
+------------------------------------------------------------------------------------------------
+
+Παραδωση τελικου κωδικα στο kaggle
+Updated 4 days ago by Emil Bantak
+Καλησπερα σας
+
+Θα ηθελα να κανω μια ερωτηση σχετικα με την παραδωση του κωδικα στο kaggle 
+
+Για την ευρεση των best parameters χρησιμοποιησα το optuna το οποιο ομως πχ για το μοντελο bert base χρειαζεται 4 ωρες για να τρεξει στο colab οποτε ακομα περισσοτερο στο kaggle 
+
+Είναι αποδεκτο να παραδωσω τα notebooks για τα μοντελα με τα best partameters hardcoded στον κωδικα εχοντας ως σχολια πως υλοποιησα το optuna στον κωδικα μου ?
+
+Ευχαριστω εκ των προτερων για τον χρονο σας
+
+0
+44 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 3 days ago by Despina Athanasia Pantazi
+Καλημέρα,
+
+Ναι, είναι μια χαρά αυτό που προτείνετε.
+
+
