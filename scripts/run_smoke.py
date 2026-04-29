@@ -23,9 +23,9 @@ def main() -> None:
         data_dir=str(PROJECT_ROOT / "data"),
         models_dir=str(PROJECT_ROOT / "models"),
     )
-    final_metrics = run_experiment(cfg)
+    history, *_ = run_experiment(cfg)
     append_to_experiments_md(
-        cfg, final_metrics, md_path=str(PROJECT_ROOT / "EXPERIMENTS.md")
+        cfg, history, md_path=str(PROJECT_ROOT / "EXPERIMENTS.md")
     )
     print(f"[done] run_id: {cfg.run_id}")
 

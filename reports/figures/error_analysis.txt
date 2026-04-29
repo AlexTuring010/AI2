@@ -1,0 +1,82 @@
+Error analysis — DistilBERT best run (seed=0)
+Total errors: 106 / 342 (31.0%)
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.827
+  Q: What is the greatest and most urgent threat when it comes to security that Barack Obama has to deal with?
+  A: The most urgent threat that he'll have to deal with, and other Presidents after him will have to deal with, is an attack
+
+TRUE: Clear Non-Reply  |  PRED: Ambivalent  |  conf=0.814
+  Q: Specifically, have you seen any success in your diplomatic strategy so far?
+  A: Well, I think you know me well enough to know that I don't like talking about whether I see success or not in a case suc
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.813
+  Q: Why are you not having a joint press conference with Putin during the summit? Why not take the chance to call out Russia
+  A: [] Well, let me make it clear: I think he's right it's a low point, and it depends on how he responds to acting consiste
+
+TRUE: Clear Non-Reply  |  PRED: Ambivalent  |  conf=0.810
+  Q: Is President Karzai correct in blaming Pakistan's intelligence services for the recent terrorist attack on Afghanistan?
+  A: First of all, we'll investigate his charge and we'll work with his service to get to the bottom of his allegation. No qu
+
+TRUE: Clear Non-Reply  |  PRED: Ambivalent  |  conf=0.808
+  Q: Do you think that housing prices will continue to fall?
+  A: David, I'm wise enough to remind you that I'm not an economist, and that I would ask you direct predictions and forecast
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.807
+  Q: What more can be done to prevent that from happening?
+  A: Ed, I'm encouraged by the rate of inflation, the job growth. We've had 49 consecutive months of uninterrupted job growth
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.805
+  Q: What do you think about giving it to an outside body of experts to take the politics out of Medicare?
+  A: Well, on the second point, that's exactly what our proposal is. It—called the MedPAC program. By the way, it was origina
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.804
+  Q:  President Bush's stance on drawing a line with Iran in regards to their nuclear ambitions.
+  A: Ed [Edwin Chen, Bloomberg News], I just strongly disagree with your premise that the six-party talks has encouraged Iran
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.804
+  Q: What do you think China needs to do to ease tensions?
+  A: I think China has to start to act more responsibly in terms of international norms on human rights and transparency.Tran
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.803
+  Q: Is the interpretation that your compromise position is to temporarily extend the Bush tax cuts wrong?
+  A: That is the wrong interpretation, because I haven't had a conversation with Republican and Democratic leaders. Here's th
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.802
+  Q: How can the alliance remain unchanged given that Australia has signaled new foreign policy with quite different position
+  A: I guess it depends if you're a half-glass-empty guy or a halfglass-full guy. It sounds like to me our foreign policy int
+
+TRUE: Clear Non-Reply  |  PRED: Ambivalent  |  conf=0.802
+  Q:  Asking for the person's opinion on whether they think something was a mistake.
+  A: I'll let other people analyze that. But what I will emphasize is that one of the nice things about being in the sixth ye
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.801
+  Q: Asking for the definition of game changer in the context of U.S. military action.
+  A: By game changer, I mean that we would have to rethink the range of options that are available to us.Now, we're already, 
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.801
+  Q: What does the decision to nominate Senator Max Baucus as Ambassador to China say about the hopes for a major tax bill in
+  A: It says that Max Baucus is going to be an outstanding Ambassador to China, and I'd like a swift confirmation. And my exp
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.800
+  Q: Can you say as Commander in Chief that the huge human and financial costs of the war in Afghanistan can be justified, gi
+  A: I want us to remember why we went to Afghanistan. We went into Afghanistan because 3,000 Americans were viciously murder
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.795
+  Q: Can you act alone?
+  A: Well, I'm going to have to act alone because we don't have enough resources. We've already been very clear: We've run ou
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.795
+  Q: Effectiveness in dealing with Democrats on various issues
+  A: We're finding common ground on Iraq. We're—I recognize there are people in Congress that say we shouldn't have been ther
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.793
+  Q: Why haven't you put more resources into renewable energy research, sir?
+  A: Wendell, we've put a lot into ethanol. And we're—matter of fact, the solution to the issue of corn-fed ethanol is cellul
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.790
+  Q: What do you say to people who are concerned about the use of these national security letters?
+  A: I was briefed by the Attorney General and the Director of the FBI on this subject last week. We spent a lot of time talk
+
+TRUE: Clear Reply  |  PRED: Ambivalent  |  conf=0.789
+  Q: What do you think we should do to help resolve this conflict between Russia and Georgia?
+  A: Precisely what we ought to do is help resolve the conflict and use our diplomats to convince people there is a better wa

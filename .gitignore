@@ -9,6 +9,10 @@ models/
 .ipynb_checkpoints/
 __pycache__/
 
+# Kaggle downloads
+kaggle/
+*.Zone.Identifier
+
 # Env
 .env
 venv/
