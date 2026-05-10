@@ -17,3 +17,5 @@ kaggle/
 .env
 venv/
 .venv/
+# Claude Code session files (local only)
+.claude/
