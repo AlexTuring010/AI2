@@ -1,0 +1,171 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.4.30)  30 APR 2026 11:30
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**./main.tex
+(main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+(fphw.cls
+Document Class: fphw 2019/03/19
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+
+\f@nch@headwidth=\skip49
+\f@nch@offset@elh=\skip50
+\f@nch@offset@erh=\skip51
+\f@nch@offset@olh=\skip52
+\f@nch@offset@orh=\skip53
+\f@nch@offset@elf=\skip54
+\f@nch@offset@erf=\skip55
+\f@nch@offset@olf=\skip56
+\f@nch@offset@orf=\skip57
+\f@nch@height=\skip58
+\f@nch@footalignment=\skip59
+\f@nch@widthL=\skip60
+\f@nch@widthC=\skip61
+\f@nch@widthR=\skip62
+\@temptokenb=\toks17
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/base\size12.clo
+File: size12.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count275
+\c@section=\count276
+\c@subsection=\count277
+\c@subsubsection=\count278
+\c@paragraph=\count279
+\c@subparagraph=\count280
+\c@figure=\count281
+\c@table=\count282
+\abovecaptionskip=\skip63
+\belowcaptionskip=\skip64
+\bibindent=\dimen148
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/titlesec\titlesec.sty
+Package: titlesec 2025/01/04 v2.17 Sectioning titles
+\ttl@box=\box53
+\beforetitleunit=\skip65
+\aftertitleunit=\skip66
+\ttl@plus=\dimen149
+\ttl@minus=\dimen150
+\ttl@toksa=\toks18
+\titlewidth=\dimen151
+\titlewidthlast=\dimen152
+\titlewidthfirst=\dimen153
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2026/03/07 v6.0 Page Geometry
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count283
+\Gm@cntv=\count284
+\c@Gm@tempcnt=\count285
+\Gm@bindingoffset=\dimen154
+\Gm@wd@mp=\dimen155
+\Gm@odd@mp=\dimen156
+\Gm@even@mp=\dimen157
+\Gm@layoutwidth=\dimen158
+\Gm@layoutheight=\dimen159
+\Gm@layouthoffset=\dimen160
+\Gm@layoutvoffset=\dimen161
+\Gm@dimlist=\toks20
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+\problembox=\box54
+) (C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks21
+\inpenc@posthook=\toks22
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\mathpazo.sty
+Package: mathpazo 2020/03/25 PSNFSS-v9.3 Palatino w/ Pazo Math (D.Puga, WaS) 
+\symupright=\mathgroup4
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/greek-fontenc\alphabeta
+.sty
+Package: alphabeta 2023-11-16 2.6 macros for Greek letters in text and math
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/greek-fontenc\textalpha
+.sty
+Package: textalpha 2023-09-12 2.5 macros for Greek letters in text
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/greek-fontenc\lgrenc.de
+f
+File: lgrenc.def 2023-09-12 2.5 LGR Greek font encoding definitions
+Now handling font encoding LGR ...
+... no UTF-8 mapping file for font encoding LGR
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/greek-fontenc\greek-fon
+tenc.def
+File: greek-fontenc.def 2023-09-12 2.5 Common Greek font encoding definitions
+LaTeX Encoding Info:    Ignoring declaration for text command \accACUTE (encodi
+ng LGR) on input line 251.
+LaTeX Encoding Info:    Ignoring declaration for text command \accGRAVE (encodi
+ng LGR) on input line 259.
+LaTeX Encoding Info:    Ignoring declaration for text command \accTILDE (encodi
+ng LGR) on input line 267.
+))
+   defining Unicode char U+00B5 (decimal 181)
+LaTeX Encoding Info:    Redeclaring text command \textmu (encoding ?) on input 
+line 388.
+))
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
+fg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(C:\Users\alexg\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen162
+\Gin@req@width=\dimen163
+)
+
+! LaTeX Error: File `booktabs.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.9 \usepackage
+               {listings}^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 3274 strings out of 467871
+ 50900 string characters out of 5418376
+ 534398 words of memory out of 5000000
+ 32176 multiletter control sequences out of 15000+600000
+ 628783 words of font info for 42 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 72i,0n,79p,209b,38s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!

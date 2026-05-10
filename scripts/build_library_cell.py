@@ -15,8 +15,10 @@ NOTEBOOK = ROOT / "notebooks" / "kaggle_experiment.ipynb"
 FILES_IN_ORDER = [
     "config.py",
     "data.py",
+    "features.py",
     "tokenization.py",
     "model.py",
+    "features_head.py",
     "multitask.py",
     "train.py",
     "evaluate.py",

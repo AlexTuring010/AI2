@@ -1,5 +1,171 @@
 # PROJECT_STATE.md
 
+## Report draft
+
+Drafted the Greek LaTeX report in `reports/main.tex` using the provided template and bibliography in `reports/refs.bib`. It includes the requested student-style thought process, educational explanations of BERT/DistilBERT/DeBERTa, the main failed experiments, final public Kaggle score **0.70**, plus the existing evaluation figures from `reports/figures/`.
+
+Local PDF compilation was not run because no LaTeX executable (`pdflatex`, `xelatex`, `lualatex`, `latexmk`, or `tectonic`) is installed/in PATH on this machine.
+
+Added the longer rewritten report as `overleaf_report_package/main_v2.tex` and mirrored it to `reports/main_v2.tex`. The new draft is about **103k Unicode characters** (145k UTF-8 bytes), keeps the original `main.tex` untouched, and is included in `ai2_report_overleaf.zip` alongside the original `main.tex`, `refs.bib`, `fphw.cls`, and figures.
+
+## Active result (2026-04-30) - numeric-feature DeBERTa breakthrough
+
+### Why this matters
+The Phase 11 tag run injected new artificial tokens into the text, so DeBERTa had to learn random token embeddings for `[A_HEDGE]`, `[OV_LOW]`, etc. That was not faithful to the Assignment 1 feature-engineering approach and it hurt.
+
+Phase 12 kept Q/A text unchanged and added numeric features through a side branch: deterministic features -> train-split standardization -> small MLP -> concat with DeBERTa pooled vector -> classifier.
+
+### Results
+| config | best epoch | val macro-F1 | val acc | f1[CR, AMB, CNR] | note |
+|---|---:|---:|---:|---|---|
+| seed 42 numfeat | 4 | **0.7007** | 0.7281 | [0.6603, 0.7750, 0.6667] | best single, beats old DeBERTa seed42 0.6962 |
+| seed 0 numfeat | 3 | 0.6462 | 0.6959 | [0.5380, 0.7689, 0.6316] | weaker, overfits at ep4 |
+| seed 1 numfeat | 3 | 0.6684 | 0.6959 | [0.6154, 0.7463, 0.6437] | useful but weaker, overfits at ep4 |
+| equal 3-seed | — | 0.6869 | — | — | worse than seed42 because seed0/1 drag it down |
+| alpha 3-seed | — | **0.7057** | — | — | weights = [0.9, 0.0, 0.1], default `submission.csv` |
+
+Best single confusion matrix: `[[69,34,2], [34,155,13], [1,9,25]]`. Compared with old DeBERTa seed42 baseline, the main gain is Clear Reply: CR F1 reaches **0.6603**.
+
+### Submission recommendation
+Submitted Phase 12 alpha numeric-feature ensemble on Kaggle: **0.70**. This is +0.01 over the previous DeBERTa alpha ensemble (**0.68**) but still not enough.
+
+### Phase 13 result: more epochs rejected
+`notebooks/kaggle_experiment.ipynb` tested:
+- seed42 numeric-feature DeBERTa, epochs=6: val **0.6876**, best@ep4
+- seed42 numeric-feature DeBERTa, epochs=6 + label_smoothing=0.05: val **0.6810**, best@ep4
+- two-run alpha ensemble: val **0.6958**, Kaggle **0.67**
+
+Conclusion: the Phase 12 ep4 result was not simply undertrained. Extending the schedule changed the training path and overfit; label smoothing did not help. Stop this branch.
+
+### Phase 14 result: longer context rejected
+`notebooks/kaggle_experiment.ipynb` tested DeBERTa + numeric side-channel with `max_length=512`, seed42, batch size 8, epochs 4.
+
+Result: val **0.6615**, acc **0.6930**, f1=[0.6161, 0.7469, 0.6216]. This is far below the ml=256 numeric-feature seed42 run (**0.7007**) and below the original DeBERTa seed42 baseline (**0.6962**).
+
+Conclusion: full context did not help this architecture. The smaller batch and longer sequence likely made optimization noisier, and DeBERTa did not show the same ml=512 gain that DistilBERT showed.
+
+### Phase 15 result: richer HW1 features rejected
+`notebooks/kaggle_experiment.ipynb` tested richer numeric features (metadata flags, question order, sentence/punctuation structure, IDF-weighted overlap, TF-IDF-style cosine) with feature hidden size 128.
+
+Result: val **0.6593**, acc **0.6959**, f1=[0.5591, 0.7617, 0.6571], Kaggle **0.64**.
+
+Conclusion: adding many feature families at once over-noised the numeric side branch. The model shifted heavily toward Ambivalent on test (`221/308`) and lost the Clear Reply gain that made Phase 12 useful. This was too aggressive, not a bug in CSV formatting or label mapping.
+
+### Phase 16 result: controlled coverage + evasion probabilities rejected
+`notebooks/kaggle_experiment.ipynb` tested Phase 16:
+- back to the winning ml=256, bs=16, ep=4, seed42 recipe,
+- numeric profile = `coverage_evidence` (base Phase 12 features + IDF/TF-IDF coverage/evidence features, no noisy metadata block),
+- append 9 predicted evasion-label probabilities from a separate TF-IDF logistic-regression evasion model,
+- train rows use out-of-fold evasion predictions to avoid gold-label leakage; val/test use a final evasion model trained on the train split.
+
+Result: val **0.6503**, acc **0.6871**, f1=[0.6216, 0.7411, 0.5882]. This is far below Phase 12 (**0.7007**) and confirms the combined coverage/evidence + evasion-probability package is not useful.
+
+Interpretation: the separate evasion predictor was a valid way to use `evasion_label` without leakage, but its probabilities did not help the clarity classifier. It preserved some Clear Reply signal but hurt Ambivalent and Clear Non-Reply. Do not spend more time on evasion stacking unless doing a much slower, careful ablation after the report.
+
+### Phase 17 result: real-word preprocessing ensemble is best local val
+`notebooks/kaggle_experiment.ipynb` tested three controlled runs, all using the Phase 12 recipe (`ml=256`, `bs=16`, `ep=4`, seed42, base numeric side-channel):
+
+| config | val macro-F1 | val acc | f1[CR, AMB, CNR] | note |
+|---|---:|---:|---|---|
+| raw Phase 12 rerun | 0.6951 | 0.7222 | [0.6476, 0.7711, 0.6667] | close to historical 0.7007; pipeline sane |
+| word normalization | 0.6965 | 0.7251 | [0.6231, 0.7807, 0.6857] | tiny single-model gain vs same-session raw; AMB/CNR up, CR down |
+| word normalization + evidence prefix | 0.6578 | 0.6901 | [0.5911, 0.7506, 0.6316] | weak alone, but complementary |
+| alpha ensemble | **0.7084** | — | — | weights = [0.0 raw, 0.65 wordnorm, 0.35 wordnorm+evidence] |
+
+The best single model is word normalization at **0.6965**, which is not a real breakthrough compared with historical Phase 12 **0.7007**. The useful discovery is complementarity: the evidence-prefix model is too weak alone but changes the prediction distribution enough to improve an alpha ensemble. The default `submission.csv` is now the Phase 17 alpha ensemble with test distribution: Ambivalent=183, Clear Reply=93, Clear Non-Reply=32.
+
+### Current final recommendation
+Submit the Phase 17 alpha ensemble if there is a submission slot. If it improves Kaggle, keep it. If it does not, final leaderboard best remains Phase 12 alpha at **0.70**. For one more experiment, prefer a **submission-only ensemble expansion** rather than another feature block: add the historical Phase 12 seed42/seed1 artifacts if available, or run one more `wordnorm` seed only if time allows. Avoid more evidence prefixes as single models; they are useful only as ensemble diversity.
+
+### Active next experiment: Phase 18 focused long-answer preprocessing
+`notebooks/kaggle_experiment.ipynb` tested a final serious sweep targeting the validation error-analysis pattern: long answers with mixed evidence, hedging, causal explanation, and deflection.
+
+Queued runs:
+1. raw Phase 12 rerun: full answer, base numeric features;
+2. Phase 17 word normalization: full answer, base numeric features;
+3. focused answer view: opening + question-overlap sentences + closing, base numeric features;
+4. focused answer view + word normalization, base numeric features;
+5. focused answer view + word normalization + `long_mixed` numeric profile.
+
+The `long_mixed` profile adds long/very-long answer flags, many-sentence flag, long-low-overlap flag, evidence-vs-hedge/deflection contrast, evidence-after-deflection, and evidence density.
+
+Result:
+
+| config | val macro-F1 | val acc | f1[CR, AMB, CNR] | note |
+|---|---:|---:|---|---|
+| raw full answer | 0.6936 | 0.7193 | [0.6604, 0.7626, 0.6579] | baseline rerun, best@ep3 |
+| wordnorm full answer | **0.6980** | 0.7339 | [0.6359, 0.7914, 0.6667] | best single in this session |
+| focused answer | 0.6796 | 0.7222 | [0.6495, 0.7794, 0.6098] | weak alone, complementary |
+| focused + wordnorm | 0.5634 | 0.6462 | [0.2778, 0.7563, 0.6562] | rejected, CR collapse |
+| focused + wordnorm + long_mixed | 0.6284 | 0.6754 | [0.5029, 0.7523, 0.6301] | rejected, still too low |
+| alpha ensemble | **0.7136** | — | — | top-three weights = 0.20 wordnorm + 0.55 raw + 0.25 focused |
+| calibrated alpha | **0.7154** | — | — | class multipliers [0.70, 1.10, 0.70], riskier Ambivalent-heavy test distribution |
+
+Interpretation: the focused-answer idea did not solve long answers as a single-model preprocessing, and combining it with word normalization was destructive. But focused raw answers are complementary enough to help the alpha ensemble. The most reliable submission is `/kaggle/working/submission.csv` (Phase 18 alpha, test distribution Ambivalent=187, Clear Reply=91, Clear Non-Reply=30). The highest local-val submission is `/kaggle/working/submission_calibrated.csv` (val 0.7154) but its test distribution is Ambivalent-heavy: 216/308.
+
+### Active next experiment: Phase 19 full-context help + dual-view model
+`notebooks/kaggle_experiment.ipynb` tested the user's requested final extension:
+
+1. full raw Q/A + `long_mixed` numeric features;
+2. full word-normalized Q/A + `long_mixed` numeric features;
+3. focused Q/A + `long_mixed` numeric features as the simple separate-view ensemble member;
+4. dual-view architecture: shared DeBERTa over full Q/A and focused Q/A, concat both pooled vectors with `long_mixed` numeric features;
+5. same dual-view architecture with word normalization.
+
+The dual-view model is implemented in `src/features_head.py` as `DualViewFeatureConcatClassifier`. It is heavier, so notebook configs used `batch_size=8` for dual-view runs. This was the “keep full context and add help” test, plus the more complex architecture the user suggested.
+
+Result:
+
+| config | val macro-F1 | val acc | f1[CR, AMB, CNR] | note |
+|---|---:|---:|---|---|
+| full raw + long_mixed | 0.6799 | 0.7105 | [0.6030, 0.7700, 0.6667] | best Phase 19 single, but below Phase 18/12 |
+| full wordnorm + long_mixed | 0.6718 | 0.7018 | [0.5941, 0.7635, 0.6579] | long_mixed erases wordnorm gain |
+| focused + long_mixed | 0.6497 | 0.6930 | [0.5574, 0.7617, 0.6301] | rejected |
+| dual-view raw + long_mixed | 0.6665 | 0.6988 | [0.6520, 0.7448, 0.6027] | overfits after ep3, CNR weak |
+| dual-view wordnorm + long_mixed | 0.6404 | 0.6637 | [0.6094, 0.7090, 0.6027] | rejected |
+| alpha ensemble | 0.6888 | — | — | far below Phase 18 alpha 0.7136 |
+| calibrated alpha | 0.6913 | — | — | still far below Phase 18 |
+
+Conclusion: Phase 19 is rejected. The dual-view architecture ran cleanly but did not improve; with ~3k examples and two DeBERTa passes, it overfits/under-optimizes. The `long_mixed` numeric profile is also too noisy: when added to full raw/wordnorm text it consistently lowers performance. Keep Phase 18 alpha as the best local model.
+
+Packaging note: Cell 8 failed while zipping run directories because Kaggle ran out of disk space (`No space left on device`). This happened after training/submission generation and does not invalidate the metrics or CSVs.
+
+### Deliverable notebooks packaged
+Regenerated the three final Kaggle deliverable notebooks:
+
+- `notebooks/kaggle_final_distilbert.ipynb`: best DistilBERT single model (`ml=512`, `lr=3e-5`, `ep=3`, seed42), writes `submission.csv`.
+- `notebooks/kaggle_final_bert.ipynb`: best BERT single model (`ml=256`, `lr=2e-5`, `ep=5`, seed1), writes `submission.csv`.
+- `notebooks/kaggle_final_deberta.ipynb`: submitted DeBERTa path that produced the public Kaggle **0.70** score: Phase 12 numeric-feature ensemble (raw full Q/A, seeds 42/0/1, fixed alpha weights `[0.9, 0.0, 0.1]`), writes `submission.csv`.
+- `notebooks/kaggle_final_deberta_large.ipynb`: experimental DeBERTa-v3-large variant of the Phase 18 setup (`batch_size=2`, `lr=1e-5`, `ep=3`) for a possible final high-risk run. This is not yet validated/submitted.
+
+All three are self-contained with the current inlined project library. The builder is `scripts/build_deliverable_notebooks.js`.
+
+Updated the final notebooks' markdown cells to Greek, in the same more student-voiced style as the report. The code cells/configs are still generated by the same builder; this was a presentation/documentation update, not a modeling change.
+
+## Previous result (2026-04-30) - feature-token DeBERTa attempt rejected
+
+### What ran
+`notebooks/kaggle_experiment.ipynb` ran two final high-upside variants:
+
+1. `microsoft/deberta-v3-base`, ml=256, seed=42, ep=4, `use_engineered_cue_tokens=True`
+2. same config + `use_negation_markers=True`
+
+Both used explicit `weight_decay=0.0`, matching the best DeBERTa setup. The cue tokens encoded question intent, answer style/evidence, Q-A lexical overlap, and answer length.
+
+### Results
+| config | best epoch | val macro-F1 | val acc | f1[CR, AMB, CNR] | verdict |
+|---|---:|---:|---:|---|---|
+| DeBERTa + cues | 3 | 0.6191 | 0.6696 | [0.4940, 0.7460, 0.6173] | rejected |
+| DeBERTa + NEG + cues | 4 | 0.6077 | 0.6696 | [0.3867, 0.7603, 0.6761] | rejected |
+
+Calibration on the cue-only run improved val from **0.6191** to **0.6499** with multipliers `[1.20, 1.00, 0.65]`, but this is still far below the best single DeBERTa baseline (**0.6962**) and current DeBERTa val ensemble (**0.7070**). Do **not** submit these unless every other submission slot is expendable.
+
+### Interpretation for report
+This is useful negative evidence: feature engineering that helped the HW1 linear/TF-IDF system did **not** transfer when injected as special tokens into a strong DeBERTa model. The likely reason is that the cues are too coarse and compete with DeBERTa's learned semantic representation. Adding `[NEG]` on top made CR worse, suggesting stacked handcrafted markers can distort the decision boundary.
+
+### Interpretation at the time
+The feature-token branch is dead. The new active branch above tests the same intuition with the correct numeric-feature architecture.
+
 ## Session end snapshot (2026-04-23)
 
 ### Kaggle leaderboard status

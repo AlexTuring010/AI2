@@ -44,8 +44,27 @@ def evaluate(
     total_loss = 0.0
     for batch in loader:
         batch = [b.to(device) for b in batch]
-        input_ids, attention_mask, labels = batch[:3]
-        out = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
+        if len(batch) == 6:
+            input_ids, attention_mask, input_ids_2, attention_mask_2, labels, features = batch
+            out = model(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                input_ids_2=input_ids_2,
+                attention_mask_2=attention_mask_2,
+                features=features,
+                labels=labels,
+            )
+        else:
+            input_ids, attention_mask, labels = batch[:3]
+        if len(batch) == 4 and hasattr(model, "feature_mlp"):
+            out = model(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                labels=labels,
+                features=batch[3],
+            )
+        elif len(batch) != 6:
+            out = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
         # out.loss μπορεί να είναι None (π.χ. multi-task forward χωρίς evasion_labels).
         if out.loss is not None:
             total_loss += out.loss.item()

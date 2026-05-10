@@ -39,6 +39,7 @@ def train_one_epoch(
     class_weights: Optional[torch.Tensor] = None,
     loss_type: str = "ce",
     focal_gamma: float = 2.0,
+    label_smoothing: float = 0.0,
     aux_evasion_weight: float = 0.0,
 ) -> float:
     """Κάθε batch είναι (input_ids, attn, labels) ή (input_ids, attn, clarity, evasion)
@@ -63,6 +64,32 @@ def train_one_epoch(
                 aux_weight=aux_evasion_weight,
             )
             loss = out.loss
+        elif len(batch) == 6:
+            input_ids, attention_mask, input_ids_2, attention_mask_2, labels, features = batch
+            out = model(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                input_ids_2=input_ids_2,
+                attention_mask_2=attention_mask_2,
+                features=features,
+                labels=None if label_smoothing > 0 else labels,
+            )
+            if label_smoothing > 0:
+                loss = F.cross_entropy(out.logits, labels, label_smoothing=label_smoothing)
+            else:
+                loss = out.loss
+        elif len(batch) == 4:
+            input_ids, attention_mask, labels, features = batch
+            out = model(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                features=features,
+                labels=None if label_smoothing > 0 else labels,
+            )
+            if label_smoothing > 0:
+                loss = F.cross_entropy(out.logits, labels, label_smoothing=label_smoothing)
+            else:
+                loss = out.loss
         else:
             input_ids, attention_mask, labels = batch[:3]
             if loss_type == "focal":
@@ -72,10 +99,21 @@ def train_one_epoch(
                 )
             elif use_ce_weight:
                 out = model(input_ids=input_ids, attention_mask=attention_mask)
-                loss = F.cross_entropy(out.logits, labels, weight=class_weights)
+                loss = F.cross_entropy(
+                    out.logits,
+                    labels,
+                    weight=class_weights,
+                    label_smoothing=label_smoothing,
+                )
             else:
-                out = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
-                loss = out.loss
+                if label_smoothing > 0:
+                    out = model(input_ids=input_ids, attention_mask=attention_mask)
+                    loss = F.cross_entropy(
+                        out.logits, labels, label_smoothing=label_smoothing
+                    )
+                else:
+                    out = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
+                    loss = out.loss
 
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
