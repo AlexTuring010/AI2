@@ -1,0 +1,495 @@
+environment setup issues
+Updated 2 weeks ago by Anonymous Poet
+Hello,
+
+I am trying to load the suggested Qwen/Qwen3.5-0.8B model on Kaggle using Hugging Face Transformers.
+
+The error I get is:
+
+Error importing huggingface_hub._snapshot_download:
+cannot import name 'KernelInfo' from 'huggingface_hub.hf_api'
+(/usr/local/lib/python3.12/dist-packages/huggingface_hub/hf_api.py)
+
+Full relevant part of the traceback:
+
+ImportError: cannot import name 'KernelInfo' from 'huggingface_hub.hf_api'
+
+This happens before calling:
+
+AutoTokenizer.from_pretrained(...)
+AutoModelForCausalLM.from_pretrained(...)
+
+However, I keep getting multiple environment/model compatibility errors on Kaggle.
+
+The main errors I encountered are:
+
+1. Qwen3.5 architecture not recognized:
+
+ValueError: The checkpoint you are trying to load has model type `qwen3_5` but Transformers does not recognize this architecture.
+
+2. Tokenizer/chat-template issue:
+
+RemoteEntryNotFoundError: Entry Not Found for url:
+https://huggingface.co/api/models/Qwen/Qwen3.5-0.8B/tree/main/additional_chat_templates?recursive=false&expand=false
+
+additional_chat_templates does not exist on "main".
+
+3. Hugging Face Hub / Transformers dependency issue:
+
+Error importing huggingface_hub._snapshot_download:
+cannot import name 'KernelInfo' from 'huggingface_hub.hf_api'
+(/usr/local/lib/python3.12/dist-packages/huggingface_hub/hf_api.py)
+
+Full relevant traceback:
+
+ImportError: cannot import name 'KernelInfo' from 'huggingface_hub.hf_api'
+
+This happens when importing:
+
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+I also noticed that if I run a pip install/upgrade cell first, the notebook may only work after manually restarting the Kaggle session and then running the notebook again. It does not reliably run top-to-bottom in one execution from a fresh session, which is a concern for the final submitted notebook.
+
+I tried upgrading/installing transformers, huggingface_hub, accelerate, safetensors, and tokenizers, but this caused further dependency conflicts and inconsistent behavior in the Kaggle environment.
+
+Could you please clarify the recommended setup for HW3 on Kaggle?
+
+- Which exact versions of transformers, huggingface_hub, accelerate, and tokenizers should we use?
+- Is installing transformers from GitHub source allowed/recommended in the submitted Kaggle notebook?
+
+- Should the notebook be expected to run top-to-bottom without a manual restart after installing packages?
+
+1
+68 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 2 weeks ago by MyrtoTsok
+Hello,
+
+The latest transformers is required for Qwen3.5, as stated in the model card: https://huggingface.co/Qwen/Qwen3.5-0.8B#hugging-face-transformers
+
+I suggest that you run the installation ( !pip install -q -U "transformers @ git+https://github.com/huggingface/transformers.git" ) just after having (re)started Kernel. 
+
+This works in kaggle, I have tested it.
+
+Let me know if any of the issues persist.
+
+Have a nice evening,
+
+Myrto
+
+
+
+
+
+--------
+
+
+
+
+error message AND Error in Submission ?
+Updated 2 weeks ago by tanassinikvel
+Good morning!
+
+1)  What is this error message that apears to notebook?
+
+<<File save error for __notebook_source__.ipynb
+
+Failed to construct 'request' : The 'duplex' member must be specified for a request with a streaming body>>
+
+this has on;y a choice below: <<Dismiss>>, Why? 
+
+2) Also this error appears in Submission of the notebook: 
+
+"Failed to load competition: Unexpected token '<', "<!doctype "... is not valid JSON"
+
+What is it? How can this be corrected?
+
+thank you
+
+0
+55 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 2 weeks ago by MyrtoTsok
+1) It might be a browser issue, or network interruption.
+2) Have you logged in to Kaggle? Have you accepted the competition rules?
+
+
+
+------
+
+
+
+3 models so, 3 notebooks?
+Updated 2 weeks ago by tanassinikvel
+Good morning!
+
+since we have three models to experiment with, (Qwen/Qwen 3.5-0,8B   ,  -2B ,   and -4B  )
+
+isn't necessary to create three notebooks as in HW2 ?
+
+thanks!
+
+0
+73 views
+Students' Answer
+Updated 2 weeks ago by Γιάννης Τσαχτίρης
+Within the kaggle competition section it is clarified that one notebook is to be submitted containing all the analysis comparisons and final submission. It's the same concept as the first assignment where we compared the 3 models and kept the best for submission.
+1
+Endorsed by Instructor (MyrtoTsok)
+1 Followup Discussions
+
+Resolved
+tanassinikvel  2 weeks ago
+yes , in first  , HW1, we compared two (2) models W2V and  TF-IDF
+
+thanks
+
+0
+
+
+-------
+
+
+Clarification on Qwen3.5 Model Selection
+Updated 2 weeks ago by Anonymous Poet
+Hello,
+
+I have a question regarding the model selection for HW3. In the assignment guidelines and previous Piazza discussions, the Qwen/Qwen3.5-0.8B (and the larger 2B/4B) models are mentioned.
+
+While experimenting with these specific base models, I noticed a very high rate of "Invalid" outputs (where the model fails to output just the label and instead generates continuous text).
+
+Would it be acceptable (or even recommended) to use their instruction-tuned counterparts (e.g., Qwen/Qwen3.5-0.8B-Instruct or Qwen/Qwen2.5-0.5B-Instruct) for this assignment? 
+
+Thank you in advance !
+
+0
+67 views
+Students' Answer
+Updated 2 weeks ago by Anonymous Calc
+Correct me if I am wrong but I think that the Qwen/Qwen3.5-0.8B is the instruct version while the Qwen/Qwen3.5-0.8B-Base is the non-instruct version
+1
+Instructors' Answer
+Updated 2 weeks ago by MyrtoTsok
+Hello.
+
+You are supposed to use the models that the assignment states. 
+
+Output handling was covered in the tutorial in detail.
+
+Regards,
+
+Myrto 
+
+1
+1 Followup Discussions
+
+Unresolved
+Anonymous Atom  3 days ago
+Hello,
+I also have this question.
+
+I have started my expirements with the models mentioned in assignment description  Qwen/Qwen3.5-0.8B,
+Qwen/Qwen3.5-2B, and Qwen/Qwen3.5-4B but this part "using prompting techniques
+with instruction-tuned language models" , at the start of the assignment description, made me re-think "Instruct" model variations.
+
+
+So the least requirement is to use models  Qwen/Qwen3.5-0.8B,
+Qwen/Qwen3.5-2B, and Qwen/Qwen3.5-4B ?
+
+Thank you in advance.
+
+
+-------
+
+
+Files
+Updated 2 weeks ago by Andreas Lampropoulos
+If i run all 3 models in one file it takes a century we ought to split them in 3 files as the previous homewok?
+2
+71 views
+Students' Answer
+Updated 1 day ago by tanassinikvel and Emil Bantak
+i have the same question what we must do exactly ?
+
+see question @125
+
+
+
+-------
+
+
+Υλικο φροντιστηριου
+Updated 2 weeks ago by Emil Bantak
+Καλημερα,
+
+Θα μπορουσατε να ανεβασετε το υλικο απο το χθεσινο φροντιστηριο 
+
+Ευχαριστω εκ των προτερων για τον χρονο σας
+
+3
+72 views
+Students' Answer
+Updated 2 weeks ago by Odysseas Katopodis
++1 Και εγώ θα ήθελα το υλικό, ευχαριστώ πολύ.
+0
+Instructors' Answer
+Updated 2 weeks ago by MyrtoTsok
+Ανέβηκε. Καλή μελέτη!
+
+
+
+-------
+
+
+Report
+Updated 1 week ago by Anonymous Beaker
+Καλημέρα,
+
+Στο template για το report υπάρχει ενότητα σύγκρισης για τις εργασίες. Γενικότερα, είχε ειπωθεί ότι μπορούμε να σβήνουμε και να εισάγουμε ενότητες αν θεωρούμε ότι αυτό θα βελτιώσει το report μας και, ήθελα να ρωτήσω, μπορούμε να σβήσουμε την ενότητα σύγκρισης και να αντιπαραθετουμε τα μοντέλα/τις εργασίες κατά σημείο στις διάφορες άλλες υποενότητες, δηλαδή σε ολη την έκταση του report? 
+
+Ευχαριστώ εκ των προτέρων 
+
+0
+63 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 1 week ago by MyrtoTsok
+Ναι, μπορείτε.
+
+
+
+-------
+
+
+Invalid output
+Updated 1 week ago by Anonymous Scale
+Καλημέρα,
+
+Βλέποντας το tutorial της Παρασκευής, αν κατάλαβα καλά, θα πρέπει να βγαίνει ως απάντηση 1 από τις 3 κλάσεις ή "Invalid". Όμως, όπως μάλλον αναφέρθηκε από κάποιον φοιτητή (δεν ακούγεται καλά στο βίντεο), θα υπάρξει πρόβλημα στην υποβολή του csv στο Kaggle τελικά? Τι πρέπει να κάνουμε για να αποφύγουμε το να μην γίνεται δεκτό στο csv (αφού στις απαντήσεις θα έχει και κάτι έξτρα, πέρα των 3 κλάσεων που λογικά περιμένει να δει)? 
+
+Ευχαριστώ
+
+0
+58 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 1 week ago by MyrtoTsok
+Καλημέρα. Πράγματι αναφέρθηκε κάτι τέτοιο από κάποιον φοιτητή, ωστόσο το έλεγξα και γίνεται κανονικά submission ακόμα και αν το label είναι διαφορετικό από τα τρία των κλάσεων (πχ. "error").
+
+------
+
+
+Number of training samples
+Updated 1 week ago by Emil Bantak
+Καλησπερα σας,
+
+Θα ηθελα να ρωτησω για τον αριθμο των samples που μπορουμε να χρησιμοποιησουμε απο το training set
+
+
+Τρεχοντας τα μοντελα βλεπω για το 0.8B μοντελο για 100 samples θελει 8 λεπτα για να τελειωσει για το 2B μοντελο για 100 samples θελει 20 λεπτα και για το 4B θελει 50 λεπτα. Επειδη το training set εχει ~ 2900 samples δεν γινεται να τρεξουμε σε ενα notebook για αυτο training set και τα τρεια μοντελα μαζι και στην συνεχεια να τρεξουμε και το test set με ~ 800 samples για το καλυτερο μοντελο θα ξεπερασουμε τις 9 ωρες του session που εχει το kaggle
+
+
+Στην εκφωνηση της εργασιας δεν βλεπω καπου να λεει οτι πρεπει να τρεξουμε και τα τρεια μοντελα με ολα τα samples απο το training set
+
+
+Οποτε θελω να ρωτησω βασιζομενος σε ολα αυτα που εχω γραψει πιο πανω μπορουμε να τρεξουμε τα μοντελα σε λιγοτερα samples απο το training set πχ 300 samples θα ειναι αποδεκτο ? Τα samples αυτα θα ειναι φυσικα τα ιδια καθε φορα που τρεχουμε τον κωδικα για reproducibility reasons
+
+
+Ευχαριστω εκ των προτερων για τον χρονο σας
+
+0
+63 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 1 week ago by MyrtoTsok
+Καλησπέρα,
+
+Όπως αναφέρθηκε και στο tutorial, σε αυτή την εργασία δεν έχετε να κάνετε training επομένως είναι εύλογο να πάρετε ένα subset του dataset για να συγκρίνετε μοντέλα και μεθόδους. Πρέπει επίσης να φροντίσετε αυτό το subset να είναι αντιπροσωπευτικό του συνολικού dataset και να το τεκμηριώσετε στο report.
+
+Καλή συνέχεια,
+
+Μυρτώ
+
+0
+
+-------
+
+
+
+Προβληματσιμός για τα metrics
+Updated 1 week ago by Anonymous Poet
+Καλησπέρα,
+
+Παρατηρώ ότι οι τιμές (f1, accuracy, recall, precision) που παίρνω είναι τραγικά χαμηλές. Ήθελα να ρωτήσω, περίπου σε τι σκορ θα πρέπει να κυμαινόμαστε; Θα πρέπει ας πούμε να προσπαθήσω να αυξήσω τις τιμές μου αλλάζοντας τα prompts ή να τα κρατήσω όπως είναι και να αναλύσω στο report γιατί βγαίνει το Χ πιο χαμηλά από το Υ (αλλά είναι και τα δύο εν τέλει απογοητευτικά); (Ρωτάω δεδομένου ότι στην πλειοψηφία των πειραμάτων έχω 0 invalid απαντήσεις και f1 λίγο μεγαλύτερο από 0.25)
+
+Ευχαριστώ.
+
+Καλό βράδυ. 
+
+1
+59 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 6 days ago by MyrtoTsok
+Καλημέρα,
+
+Αυτό στο οποίο θα βαθμλογηθείτε δεν είναι το F1 καθεαυτό αλλά οι επιλογές που κάνατε στο design των prompts, αλλά και στις παραμέτρους των μοντέλων που επιλέξατε. 
+
+Ωστόσο το 0.25 είναι πολύ χαμηλό για το task. Καλό είναι να αναλύσεις γιατί γίνεται αυτό (υπάρχουν patterns λάθος επιλογών μοντέλου, πχ. έχει προτίμηση σε μία κατηγορία έναντι των άλλων;) και να αλλάξεις τα prompts (ή ό,τι άλλο πρέπει) καταλλήλως. 
+
+Καλή συνέχεια!
+
+0
+1 Followup Discussions
+
+Unresolved
+Anonymous Poet  6 days ago
+Άρα αν φτασω σε ένα σημείο που δεν υπάρχουν άλλα περιθώρια (από θέμα εξάντλησης ωρών στο Kaggle & προθεσμίας της εργασίας), να γράψω στο report αυτά τα τραγικά νούμερα που βρίσκω και απλά να κάνω ένα extensive error analysis & μια ενότητα για το τι θα έκανα αν είχα χρόνο? Αν κατάλαβα καλά, αυτό είπατε ότι μετράει περισσότερο από τα σκορ μας?
+
+
+
+------
+
+
+Πώς προστατεύω ένα μεγάλο sweep στο Kaggle από διακοπή του session;
+Updated 7 days ago by George Lambroukos
+Γειά σας,
+
+Σχεδίασα ένα πείραμα: 3 prompt designs × 4 στρατηγικές × 3 μεγέθη Qwen3.5 = 36 συνδυασμοί σε subset 300 γραμμών του validation set, που υλοποίησα τοπικά για να γράψω την αναφορά μου.
+
+Όταν ανέβασα το notebook στο Kaggle (T4 ×2), μόνο το πρώτο sweep για το Qwen3.5-0.8B (12 συνδυασμοί) πήρε πάνω από 1 ώρα. Το batching που χρησιμοποιούσα τοπικά για επιτάχυνση εδώ βγάζει OOM errors ακόμα και με batch_size=8 στο 0.8B (και αναγκαστικά χρησιμοποιώ τώρα batch_size=1)
+
+Πώς προστατεύομαι από μια πιθανή διακοπή του Kaggle session κατά τη διάρκεια του sweep; Όλα τα αποτελέσματα ζουν στη μνήμη, οπότε ένα crash σημαίνει ότι ξεκινάω από την αρχή, αρκετές ώρες σε ρίσκο για ολόκληρη την εκτέλεση + περιορισμένος συνολικός χρόνος για τις διαθέσιμες GPUs.
+
+Πρέπει να παραδώσουμε το εκτελεσμένο notebook με τα outputs του στο Kaggle και το τωρινό μου setup, δεδομένων των χρόνων που παρατηρώ, δείχνει ριψοκίνδυνο. Τι θα μπορούσα να κάνω?
+
+Ευχαριστώ!
+
+0
+55 views
+Students' Answer
+Where students collectively construct a single answer
+
+3 Followup Discussions
+
+Resolved
+George Lambroukos  6 days ago
+Update: Τελικά οι 36 συνδυασμοί μαζί με τα predictions του test set πήραν 9 ωρες. Πρόλαβα να κάνω save το notebook + τα outputs αλλά θα ήθελα να πω και για τους υπόλοιπους, οτι το session δεν τερμάτιστηκε όπως είχε αναφερθεί σε άλλο thread στις 9 ωρες. Στην περίπτωση μου, μεχρι σχεδον και τις 10 ώρες που ήταν ενεργο, δεν υπήρξε προβλημα.
+
+1
+Anonymous Poet  6 days ago
+αν δεν κανω λαθος αν πατησεις save and run all η kaggle gpu εχει time limit 12 ωρες διαφορετικα αν πατησεις απλα run all και το τρεξεις manually εχει μεχρι 9 ωρες
+0
+George Lambroukos  6 days ago
+στην περιπτωση μου παντως, που ετρεξα ολα τα cells ενα προς ενα, μετα το Save Vesrion που εκανα (9 ωρες active session + GPU), το session του notebook ηταν για ακομα μια ωρα περιπου ανοιχτο χωρις να υπαρχει καποιο προβλημα
+
+
+------
+
+
+Qwen 4B evaluation on the full dataset 
+Updated 5 days ago by Anonymous Beaker
+Hello,
+
+I have an issue with the Qwen 4B evaluation. No matter the prompt, the model burns through its token limit on its internal "Thinking Process" and fails to output the actual label. Fixing this requires an unrealistically high max_new_tokens limit.
+
+The problem is I am evaluating on the full dataset. I already completed the 0.8B and 2B runs before the tutorial (which was released almost a week late) showed we could use a subset. I don't have the time to rerun all previous models on a subset just for consistency, and waiting for 4B to process the entire dataset with 100,000+ tokens is impossible.
+
+Given the tight assignment deadline, the late release of the tutorial, and Kaggle's strict weekly GPU quotas, is it acceptable to leave the metrics as they are and just thoroughly explain the model's behavior in the report?
+
+Thanks
+
+
+--------
+
+
+Ερώτηση για τα μοντέλα
+Updated 4 days ago by Agapi Kallinikou
+Καλημέρα,
+
+ήθελα να ρωτήσω το εξής: Στην εκφώνηση της εργασίας λέει "using prompting techniques
+with instruction-tuned language models" και πιο κάτω "you should work with the following Qwen-family models: Qwen/Qwen3.5-0.8B,
+Qwen/Qwen3.5-2B, and Qwen/Qwen3.5-4B". Η αλήθεια είναι πως με μια πρώτη γρήγορη ανάγνωση θεώρησα ότι ζητείται να χρησιμοποιήσουμε τις base εκδοχές αυτών των 3, αλλά τώρα σκέφτομαι μήπως εννοούσατε το Qwen3 VL 8B Instruct κλπ. Μπορούμε να πάρουμε μόνο τις intruct- εκδοχές των 0.8B-2B-4B αντίστοιχα ή χρειάζονται για την εργασία οπωσδήποτε οι base (και οι instruct να μπουν ως εξτρα);
+
+Ευχαριστώ, καλή συνέχεια.
+
+0
+49 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 4 days ago by MyrtoTsok
+Καλημέρα, τα URL της εκφώνησης σας "στέλνουν" στα μοντέλα που πρέπει να χρησιμοποιήσετε.
+
+
+-------
+
+
+Report
+Updated 4 days ago by Anonymous Calc
+Για το report πρεπει να ακολουθησουμε το template του eclass ή μπορουμε να κανουμε δικο μας τελειως?
+0
+45 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 3 days ago by MyrtoTsok
+Το template υπάρχει για να σας βοηθήσει. Το προσαρμόζετε εσείς στα ζητούμενα της εργασίας.
+
+------
+
+
+Χρήση cached αποτελεσμάτων
+Updated 2 days ago by Γιάννης Τσαχτίρης
+Μπορούμε στην τελική υποβολή να κάνουμε χρήση cached (.pkl) αποτελεσμάτων για να μειώσουμε τον τελικό χρόνο εκτέλεσης και υποβολής;
+0
+37 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 2 days ago by MyrtoTsok
+Το notebook πρέπει να τρέξει τον κώδικα που δίνει το τελικό αποτέλεσμα (end-to-end, όχι με cached αρχείο).
+
+Για να μειωθεί ο τελικός χρόνος υποβολής μπορείτε να κάνετε ο,τι αναφέρθηκε εδώ: @144
+
+ αρκεί να διασφαλίζετε το ότι είναι ορατά όλα τα αποτελέσματα που πρέπει ΚΑΙ μπορούν να αναπαραχθούν αυτούσια.
+
+
+-------
+
+
+Μορφή υποβολής
+Updated 2 days ago by Anonymous Atom
+Καλησπέρα,
+
+Μπορώ στο τελικό notebook που θα υποβάλλω να έχω κρατήσει μόνο τον κώδικα του καλύτερου ζεύγους {μοντέλο, προσέγγιση} και όλα τα υπόλοιπα πειράματά μου να είναι σχολιασμένα? Προς το παρόν είναι στημένο έτσι, έχοντας προσθέσει ένα κελί markdown κάτω από κάθε αποτυχημένο πειραμα στο οποίο φαίνονται και τα (κακά) αποτελέσματά του. 
+
+Είναι αποδεκτό αυτό ή να το αλλάξω; 
+
+Ευχαριστώ 
+
+0
+43 views
+Students' Answer
+Where students collectively construct a single answer
+
+Instructors' Answer
+Updated 2 days ago by MyrtoTsok
+Αν καταλαβαίνω καλά υπάρχουν όλα όσα θα έβλεπα αν δεν ήταν σχολιασμενα τα συγκεκριμένα κελιά. Εφόσον έχεις φροντίσει να είναι και reproducible άρα αν τα τρεξω θα δω κι εγώ τα ίδια αποτελέσματα είναι αποδεκτό, ναι.

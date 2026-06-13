@@ -1,0 +1,47 @@
+YS19 2025-2026: Assignment 3
+Response clarity classification in political question–answer (QA) pairs.
+
+
+Overview
+In this assignment, you will develop and evaluate automatic classifiers for the task of response clarity
+classification in political question–answer (QA) pairs.
+
+Start
+
+17 days ago
+Close
+
+7 days to go
+Evaluation
+On Kaggle, the evaluation metric must be F1-score, while for the report you should evaluate your classifier using accuracy, precision, recall and Macro F1-score.
+
+Output File
+Your model MUST categorize each sample with the exact labels {Ambivalent, Clear Reply, Clear Non-Reply}.
+Your output MUST follow the format used in sample_submission.csv
+
+
+YS19 2025-2026: Assignment 3
+Response clarity classification in political question–answer (QA) pairs.
+
+
+YS19 2025-2026: Assignment 3
+
+Join Competition
+Dataset Description
+Files
+You will work with the dataset released for SemEval 2026 Task 6 (CLARITY). The dataset consists of political QA pairs extracted from interviews in which journalists ask questions and public figures provide answers.
+
+Each record contains metadata (e.g., title, date, president, url, question order) and the interview text. Importantly, the dataset distinguishes between:
+
+interview question: the original journalist turn, which may contain multiple questions;
+interview answer: the corresponding answer.
+Because a single journalist turn may include more than one question, the dataset also provides a segmented field question, which contains exactly one question. Therefore, the core supervised instances in this assignment are (question, interview answer) pairs, where question is a single-question segment and interview answer is the answer given in the interview.
+
+The prediction target is clarity label, a three-class label:
+
+Clear Reply
+Ambivalent
+Clear Non-Reply
+Each (question, interview answer) pair is associated with a single, unique ground-truth clarity label.
+
+

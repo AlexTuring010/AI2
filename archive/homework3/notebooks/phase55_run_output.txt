@@ -1,0 +1,154 @@
+﻿========================================================================
+transformers: 5.8.0.dev0 | torch: 2.10.0+cu128
+CUDA: True | GPU: Tesla T4
+OK -- Qwen3.5 supported
+========================================================================
+dev subset: N=500 class dist: {'Ambivalent': 296, 'Clear Reply': 152, 'Clear Non-Reply': 52}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+test set: 308 examples | gold present: True
+
+========================================================================
+PROMPT: cot_v5c
+========================================================================
+You are an expert annotator for political interviews. You are given the specific question a journalist asked and the answer a public figure gave. Judge ONE thing only: did the answer give the specific information the question asked for?
+
+Do not be impressed by length or fluency -- but also do not be overly suspicious. Judge the substance: is the requested information actually present in the answer?
+
+Use exactly one of these three labels:
+
+- Clear Reply: the answer gives the specific information, position, or yes/no that the question asked for. It is STILL a Clear Reply if the speaker also adds extra commentary, context, justification, or caveats around it -- what matters is only that the specific requested information is present.
+- Ambivalent: the answer engages with the question's topic but does NOT actually give the specific information asked. It hedges, generalises, answers an easier or different question, gives only part of what was asked, or talks around it.
+- Clear Non-Reply: the answer does not engage with the question at all. The speaker refuses, explicitly declines, or changes the subject.
+
+Think it through step by step:
+1. What specific information does the question ask for? (one sentence)
+2. What does the answer actually provide? (one sentence)
+3. Is that specific information present in the answer? If yes -> Clear Reply (extra commentary around it is fine). If the speaker engages the topic but does not give it -> Ambivalent. If the speaker does not engage the topic at all -> Clear Non-Reply.
+
+Keep your reasoning to about 3 short sentences. Then, on a final separate line, write exactly:
+Label: <one of: Clear Reply, Ambivalent, Clear Non-Reply>
+Fetching 2 files: 100%|â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ| 2/2 [00:34<00:00, 17.18s/it]
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights: 100%|â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ| 426/426 [00:02<00:00, 177.93it/s]
+
+loaded Qwen/Qwen3.5-4B in 42s | GPU mem 4.2GB
+
+========================================================================
+(1) cot_v5c GREEDY on dev subset
+========================================================================
+cot_v5c dev: macroF1=0.563  weightedF1=0.632  acc=0.626  invalid=0.0%  (5414s)
+
+Reference (Phase 5 dev): cot_v4 macroF1=0.548 wF1=0.621 acc=0.618 | cot_v5b macroF1=0.535 wF1=0.632 acc=0.634
+
+confusion matrix (cot_v5c dev):
+(rows = gold, cols = pred)
+                       Clear Reply      Ambivalent Clear Non-Reply         Invalid
+Clear Reply                    105              46               1               0
+Ambivalent                      68             185              43               0
+Clear Non-Reply                 11              18              23               0
+
+class               precision   recall       f1  support
+Clear Reply             0.571    0.691    0.625      152
+Ambivalent              0.743    0.625    0.679      296
+Clear Non-Reply         0.343    0.442    0.387       52
+
+--- example errors (cot_v5c dev) ---
+
+### gold=Ambivalent  ->  pred=Clear Non-Reply   (43 cases)
+  Q: whether they (presumably referring to a group of individuals) are qualified to be Commander in Chief.
+  A: I appreciate you veryâ€” Jackson [David Jackson, USA Today]â€”Jackson. Nice to see you. [] Thank you.
+
+  Q: How will you keep that coalition from fraying in 2023?
+  A: Well, in answering your questions first, I'm not at all worried about holding the alliance together in NATO and European Union, as well as other nations.[]I assume this is simultaneous?All right. []
+
+
+### gold=Ambivalent  ->  pred=Clear Reply   (68 cases)
+  Q: Or to be accused of being a do-nothing President who couldn't get anything done because you faced a dysfunctional Congress?
+  A: Well, I think that I never have a green light. I'm bound by the Constitution; I'm bound by separation of powers. There are some things we can't do.Congress has the power of the purse, for example. I would love to fund a large infrastructure proposal right now that would put millions of people to work and boost our GDP.
+
+  Q: Do you think that execution and the flaws in the rollout affect your ability to do other things? (pertaining to the execution and flaws in the rollout)
+  A: Well, look, if it comes to immigration reform, there is no reason for us not to do immigration reform. And we've already got strong bipartisan support for immigration reform out of the Senate. You've gotâ€”I met with a number of traditionally very conservative clergy who are deeply committed to immigration reform. We've 
+
+
+### gold=Clear Non-Reply  ->  pred=Ambivalent   (18 cases)
+  Q: How do you ensure that North Korea will commit to denuclearization?
+  A: Well, I think can you ensure anything? Can I ensure that you're going to be able to sit down properly when you sit down? I mean, you can't ensure anything. All I can say is they want to make a deal. That's what I do. My whole life has been deals. I've done great at it, and that's what I do. And I know when somebody wan
+
+  Q: Is there no shutdown scenario for the midâ€”for the lame duck?
+  A: I don't know. I can't tell you that. No, I can't commit to that, but it's possible.
+
+
+### gold=Clear Non-Reply  ->  pred=Clear Reply   (11 cases)
+  Q: Is the idea of ceding Ukrainian territory completely off the table?
+  A: On the latter point, my answer is yes. That depends on the G-20. Iâ€”that was raised today. And I raised the possibility, if that can't be doneâ€”if Indonesia and others do not agreeâ€”then we should, in my view, ask to have both be able to attend the meetings, as well asâ€”well, basically, being able to attend the G-20 meetin
+
+  Q: Would you consider taking away their Federal funding?
+  A: I don't want to say that. They'll listen. They'll be fine. I think we're going to have a good relationship. They need the Federal Government not only for fundingâ€”and I'm not saying take it awayâ€”but they need it for advice. They'll need, maybe, equipment that we have. We have a tremendous stockpile that we're in the pro
+
+
+### gold=Clear Reply  ->  pred=Ambivalent   (46 cases)
+  Q: Do you have any response to the subpoena issued to your campaign for documents relating to sexual harassment allegations against you?
+  A: All I can say is it's totally fake news. It's just fake. It's fake. It's made-up stuff, and it's disgraceful what happens. But that's happens in the world of politics.Jon [Jonathan Karl, ABC News].
+
+  Q: Were those comments interpreted accurately?
+  A: No, it's not what I meant. It's what I said. And that'sâ€”I think it's different than maybe your interpretation. I think we're going to do very well with over a period of time. I'm in no rush. The sanctions are on. We got our hostages back. Our remains are coming back; you saw the beautiful ceremony in Hawaii with Mike P
+
+
+### gold=Clear Reply  ->  pred=Clear Non-Reply   (1 cases)
+  Q:  Discussion about Venezuela.
+  A: We did. []
+
+
+subgroup (cot_v5c dev):
+subgroup by q_words  (cut points: [10, 16] )
+  short   N=158  acc=0.665  macroF1=0.606
+  medium  N=158  acc=0.576  macroF1=0.531
+  long    N=184  acc=0.636  macroF1=0.545
+
+subgroup by a_words  (cut points: [105, 367] )
+  short   N=166  acc=0.596  macroF1=0.556
+  medium  N=167  acc=0.629  macroF1=0.543
+  long    N=167  acc=0.653  macroF1=0.596
+
+========================================================================
+(2) cot_v5c GREEDY on test set -> submission_greedy.csv
+========================================================================
+predicted 308 test examples in 3387s -> submission_greedy.csv
+cot_v5c GREEDY test: macroF1=0.560  weightedF1=0.672  acc=0.662
+pred dist: {'Ambivalent': 174, 'Clear Reply': 103, 'Clear Non-Reply': 31}
+
+========================================================================
+(3) SELF-CONSISTENCY on test (cot_v5c, up to N=8 sampled passes, temp=0.7)
+========================================================================
+SC N=1: macroF1=0.553  weightedF1=0.670  acc=0.662  (pass 3538s)
+SC N=2: macroF1=0.581  weightedF1=0.692  acc=0.685  (pass 3500s)
+SC N=3: macroF1=0.561  weightedF1=0.674  acc=0.666  (pass 3513s)
+SC N=4: macroF1=0.544  weightedF1=0.672  acc=0.666  (pass 3531s)
+SC N=5: macroF1=0.550  weightedF1=0.667  acc=0.659  (pass 3490s)
+SC N=6: macroF1=0.542  weightedF1=0.669  acc=0.662  (pass 3473s)
+SC N=7: macroF1=0.547  weightedF1=0.664  acc=0.656  (pass 3497s)
+SC N=8: macroF1=0.538  weightedF1=0.664  acc=0.656  (pass 3502s)
+
+========================================================================
+FINAL
+========================================================================
+cot_v5c GREEDY     test: macroF1=0.560  weightedF1=0.672  acc=0.662
+cot_v5c SC (N=2)   test: macroF1=0.581  weightedF1=0.692  acc=0.685
+reference: cot_v4 test macroF1=0.575 / Kaggle LB 0.725 (2nd place)
+
+-> submission.csv = SELF-CONSISTENCY (N=2), best on weighted-F1
+wrote /kaggle/working/submission.csv | pred dist: {'Ambivalent': 181, 'Clear Reply': 101, 'Clear Non-Reply': 26}
+   Id    Predicted
+0   0   Ambivalent
+1   1   Ambivalent
+2   2   Ambivalent
+3   3   Ambivalent
+4   4   Ambivalent
+5   5   Ambivalent
+6   6   Ambivalent
+7   7   Ambivalent
+8   8   Ambivalent
+9   9  Clear Reply
+
+===== DONE =====
+
